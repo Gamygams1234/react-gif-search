@@ -16,7 +16,7 @@ export default class App extends Component {
       .get("http://api.giphy.com/v1/gifs/trending?api_key=ueN1qWVA8zwPKXoXs5jUXmIFpVuJStKn")
       .then((response) => {
         this.setState({
-          gifs: response.data,
+          gifs: response.data.data,
         });
       })
       .catch((error) => {
@@ -34,7 +34,7 @@ export default class App extends Component {
           </div>
         </div>
         <div className="main-content">
-          <GifList />
+          <GifList data={this.state.gifs} />
         </div>
       </div>
     );
