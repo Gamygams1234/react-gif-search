@@ -9,26 +9,19 @@ export default class App extends Component {
     super();
     this.state = {
       gifs: [],
+      loading: true,
     };
   }
   componentDidMount() {
-    axios
-      .get("http://api.giphy.com/v1/gifs/trending?api_key=ueN1qWVA8zwPKXoXs5jUXmIFpVuJStKn")
-      .then((response) => {
-        this.setState({
-          gifs: response.data.data,
-        });
-      })
-      .catch((error) => {
-        console.log("Error fetching and parsing data", error);
-      });
+    this.performSearch();
   }
-  performSearch = (query) => {
+  performSearch = (query = "john cena") => {
     axios
       .get(`http://api.giphy.com/v1/gifs/search?q=${query}&limit=24&api_key=ueN1qWVA8zwPKXoXs5jUXmIFpVuJStKn `)
       .then((response) => {
         this.setState({
           gifs: response.data.data,
+          loading: false,
         });
       })
       .catch((error) => {
@@ -45,9 +38,7 @@ export default class App extends Component {
             <SearchForm onSearch={this.performSearch} />
           </div>
         </div>
-        <div className="main-content">
-          <GifList data={this.state.gifs} />
-        </div>
+        <div className="main-content">{this.state.loading ? <p>Loading</p> : <GifList data={this.state.gifs} />}</div>
       </div>
     );
   }
